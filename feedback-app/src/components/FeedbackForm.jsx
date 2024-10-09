@@ -10,28 +10,31 @@ function FeedbackForm({ handleAdd }) {
   const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
-    if (text === "") {
+    const newText = e.target.value;
+    setText(newText);
+
+    if (newText.trim() === "") {
       setBtnDisabled(true);
       setMessage(null);
-    } else if (text !== "" && text.trim().length <= 10) {
+    } else if (newText.trim().length < 10) {
       setMessage("Text must be at least 10 characters!");
       setBtnDisabled(true);
     } else {
       setMessage(null);
       setBtnDisabled(false);
     }
-    setText(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (text.trim().length > 10) {
+    if (text.trim().length >= 10) {
       const newFeedback = {
         text,
         rating,
       };
       handleAdd(newFeedback);
       setText("");
+      setBtnDisabled(true);
     }
   };
 
@@ -43,6 +46,7 @@ function FeedbackForm({ handleAdd }) {
         <div className="input-group">
           <input
             type="text"
+            id="write_a_review"
             placeholder="Write a review"
             value={text}
             onChange={handleChange}
